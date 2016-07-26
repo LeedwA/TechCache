@@ -1,12 +1,12 @@
 /**
  * Copyright (c) 2012-2013, Michael Yang 杨福海 (www.yangfuhai.com).
- * <p/>
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * <p/>
+ * <p>
  * http://www.apache.org/licenses/LICENSE-2.0
- * <p/>
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -54,6 +54,7 @@ import java.util.concurrent.atomic.AtomicLong;
 import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
 /**
@@ -231,7 +232,12 @@ public class ACache {
             public void call(Subscriber<? super Integer> subscriber) {
                 put(key, value.toString());
             }
-        }).subscribeOn(Schedulers.io());
+        }).subscribeOn(Schedulers.io()).subscribe(new Action1<Integer>() {
+            @Override
+            public void call(Integer integer) {
+
+            }
+        });
     }
 
     /**
@@ -249,7 +255,12 @@ public class ACache {
                 put(key, value.toString(), saveTime);
 
             }
-        }).subscribeOn(Schedulers.io());
+        }).subscribeOn(Schedulers.io()).subscribe(new Action1<Integer>() {
+            @Override
+            public void call(Integer integer) {
+
+            }
+        });
     }
 
     /**
@@ -268,10 +279,10 @@ public class ACache {
                 String JSONString = getAsString(key);
                 try {
                     JSONObject obj = new JSONObject(JSONString);
-                    subscriber.onNext(obj) ;
+                    subscriber.onNext(obj);
                 } catch (Exception e) {
                     e.printStackTrace();
-                    subscriber.onNext(null) ;
+                    subscriber.onNext(null);
                 }
             }
         }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
@@ -293,7 +304,12 @@ public class ACache {
             public void call(Subscriber<? super Integer> subscriber) {
                 put(key, value.toString());
             }
-        }).subscribeOn(Schedulers.io());
+        }).subscribeOn(Schedulers.io()).subscribe(new Action1<Integer>() {
+            @Override
+            public void call(Integer integer) {
+
+            }
+        });
     }
 
     /**
@@ -309,7 +325,12 @@ public class ACache {
             public void call(Subscriber<? super Integer> subscriber) {
                 put(key, value.toString(), saveTime);
             }
-        }).subscribeOn(Schedulers.io());
+        }).subscribeOn(Schedulers.io()).subscribe(new Action1<Integer>() {
+            @Override
+            public void call(Integer integer) {
+
+            }
+        });
     }
 
     /**
@@ -319,7 +340,6 @@ public class ACache {
      * @return JSONArray数据
      */
     public Observable<JSONArray> getAsJSONArray(final String key) {
-
 
 
         return Observable.create(new Observable.OnSubscribe<JSONArray>() {
@@ -457,7 +477,12 @@ public class ACache {
             public void call(Subscriber<? super Integer> subscriber) {
                 put(key, value, -1);
             }
-        }).subscribeOn(Schedulers.io());
+        }).subscribeOn(Schedulers.io()).subscribe(new Action1<Integer>() {
+            @Override
+            public void call(Integer integer) {
+
+            }
+        });
 
     }
 
@@ -495,7 +520,12 @@ public class ACache {
                     }
                 }
             }
-        }).subscribeOn(Schedulers.io());
+        }).subscribeOn(Schedulers.io()).subscribe(new Action1<Integer>() {
+            @Override
+            public void call(Integer integer) {
+
+            }
+        });
 
     }
 
@@ -541,7 +571,6 @@ public class ACache {
         }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
 
 
-
     }
 
     // =======================================
@@ -560,7 +589,13 @@ public class ACache {
             public void call(Subscriber<? super Integer> subscriber) {
                 put(key, Utils.Bitmap2Bytes(value));
             }
-        }).subscribeOn(Schedulers.io());
+        }).subscribeOn(Schedulers.io()).subscribe(new Action1<Integer>() {
+            @Override
+            public void call(Integer integer) {
+
+            }
+        });
+
 
     }
 
@@ -577,7 +612,12 @@ public class ACache {
             public void call(Subscriber<? super Integer> subscriber) {
                 put(key, Utils.Bitmap2Bytes(value), saveTime);
             }
-        }).subscribeOn(Schedulers.io());
+        }).subscribeOn(Schedulers.io()).subscribe(new Action1<Integer>() {
+            @Override
+            public void call(Integer integer) {
+
+            }
+        });
     }
 
     /**
@@ -615,7 +655,12 @@ public class ACache {
             public void call(Subscriber<? super Integer> subscriber) {
                 put(key, Utils.drawable2Bitmap(value));
             }
-        }).subscribeOn(Schedulers.io());
+        }).subscribeOn(Schedulers.io()).subscribe(new Action1<Integer>() {
+            @Override
+            public void call(Integer integer) {
+
+            }
+        });
     }
 
     /**
@@ -631,7 +676,12 @@ public class ACache {
             public void call(Subscriber<? super Integer> subscriber) {
                 put(key, Utils.drawable2Bitmap(value), saveTime);
             }
-        }).subscribeOn(Schedulers.io());
+        }).subscribeOn(Schedulers.io()).subscribe(new Action1<Integer>() {
+            @Override
+            public void call(Integer integer) {
+
+            }
+        });
     }
 
     /**
@@ -673,13 +723,9 @@ public class ACache {
      * @param key
      * @return 是否移除成功
      */
-    public Observable<Boolean> remove(final String key) {
-        return Observable.create(new Observable.OnSubscribe<Boolean>() {
-            @Override
-            public void call(Subscriber<? super Boolean> subscriber) {
-                subscriber.onNext( mCache.remove(key));
-            }
-        }).subscribeOn(Schedulers.io());
+    public boolean remove(final String key) {
+        return mCache.remove(key);
+
     }
 
     /**

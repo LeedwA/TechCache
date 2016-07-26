@@ -1,0 +1,1 @@
+把AsimpleCache改造成了相应式的结构

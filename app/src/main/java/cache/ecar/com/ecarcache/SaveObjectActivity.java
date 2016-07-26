@@ -53,7 +53,7 @@ public class SaveObjectActivity extends Activity {
      * @param v
      */
     public void save(View v) {
-        mCache.put("testObject", userBean);
+        mCache.put("test", userBean);
     }
 
     /**

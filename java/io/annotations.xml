@@ -1,0 +1,8 @@
+<root>
+    <item name='java.io.FileReader'>
+        <annotation name='java.lang.annotation.Deprecated' />
+    </item>
+    <item name='java.io.FileWriter'>
+      <annotation name='java.lang.annotation.Deprecated' />
+    </item>
+</root>

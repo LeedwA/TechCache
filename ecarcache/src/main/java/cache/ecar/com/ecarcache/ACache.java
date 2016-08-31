@@ -566,6 +566,8 @@ public class ACache {
                             e.printStackTrace();
                         }
                     }
+                }else{
+                    subscriber.onNext(null);
                 }
             }
         }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());

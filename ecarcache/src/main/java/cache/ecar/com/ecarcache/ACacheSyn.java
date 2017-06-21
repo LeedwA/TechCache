@@ -57,40 +57,43 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
+import static android.system.Os.remove;
+
 /**
- * 异步存取
+ * 同步存取
+ *
  * @author Michael Yang（www.yangfuhai.com） update at 2013.08.07
  */
-public class ACache {
+public class ACacheSyn {
     public static final int TIME_HOUR = 60 * 60;
     public static final int TIME_DAY = TIME_HOUR * 24;
     private static final int MAX_SIZE = 1000 * 1000 * 50; // 50 mb
     private static final int MAX_COUNT = Integer.MAX_VALUE; // 不限制存放数据的数量
-    private static Map<String, ACache> mInstanceMap = new HashMap<String, ACache>();
+    private static Map<String, ACacheSyn> mInstanceMap = new HashMap<String, ACacheSyn>();
     private ACacheManager mCache;
 
-    public static ACache get(Context ctx) {
+    public static ACacheSyn get(Context ctx) {
         return get(ctx, "ACache");
     }
 
-    public static ACache get(Context ctx, String cacheName) {
+    public static ACacheSyn get(Context ctx, String cacheName) {
         File f = new File(ctx.getCacheDir(), cacheName);
         return get(f, MAX_SIZE, MAX_COUNT);
     }
 
-    public static ACache get(File cacheDir) {
+    public static ACacheSyn get(File cacheDir) {
         return get(cacheDir, MAX_SIZE, MAX_COUNT);
     }
 
-    public static ACache get(Context ctx, long max_zise, int max_count) {
+    public static ACacheSyn get(Context ctx, long max_zise, int max_count) {
         File f = new File(ctx.getCacheDir(), "ACache");
         return get(f, max_zise, max_count);
     }
 
-    public static ACache get(File cacheDir, long max_zise, int max_count) {
-        ACache manager = mInstanceMap.get(cacheDir.getAbsoluteFile() + myPid());
+    public static ACacheSyn get(File cacheDir, long max_zise, int max_count) {
+        ACacheSyn manager = mInstanceMap.get(cacheDir.getAbsoluteFile() + myPid());
         if (manager == null) {
-            manager = new ACache(cacheDir, max_zise, max_count);
+            manager = new ACacheSyn(cacheDir, max_zise, max_count);
             mInstanceMap.put(cacheDir.getAbsolutePath() + myPid(), manager);
         }
         return manager;
@@ -100,7 +103,7 @@ public class ACache {
         return "_" + android.os.Process.myPid();
     }
 
-    private ACache(File cacheDir, long max_size, int max_count) {
+    private ACacheSyn(File cacheDir, long max_size, int max_count) {
         if (!cacheDir.exists() && !cacheDir.mkdirs()) {
             throw new RuntimeException("can't make dirs in " + cacheDir.getAbsolutePath());
         }
@@ -227,18 +230,7 @@ public class ACache {
      * @param value 保存的JSON数据
      */
     public void put(final String key, final JSONObject value) {
-
-        Observable.create(new Observable.OnSubscribe<Integer>() {
-            @Override
-            public void call(Subscriber<? super Integer> subscriber) {
-                put(key, value.toString());
-            }
-        }).subscribeOn(Schedulers.io()).subscribe(new Action1<Integer>() {
-            @Override
-            public void call(Integer integer) {
-
-            }
-        });
+        put(key, value.toString());
     }
 
     /**
@@ -249,19 +241,7 @@ public class ACache {
      * @param saveTime 保存的时间，单位：秒
      */
     public void put(final String key, final JSONObject value, final int saveTime) {
-
-        Observable.create(new Observable.OnSubscribe<Integer>() {
-            @Override
-            public void call(Subscriber<? super Integer> subscriber) {
-                put(key, value.toString(), saveTime);
-
-            }
-        }).subscribeOn(Schedulers.io()).subscribe(new Action1<Integer>() {
-            @Override
-            public void call(Integer integer) {
-
-            }
-        });
+        put(key, value.toString(), saveTime);
     }
 
     /**
@@ -270,23 +250,15 @@ public class ACache {
      * @param key
      * @return JSONObject数据
      */
-    public Observable<JSONObject> getAsJSONObject(final String key) {
-
-
-        return Observable.create(new Observable.OnSubscribe<JSONObject>() {
-
-            @Override
-            public void call(Subscriber<? super JSONObject> subscriber) {
-                String JSONString = getAsString(key);
-                try {
-                    JSONObject obj = new JSONObject(JSONString);
-                    subscriber.onNext(obj);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    subscriber.onNext(null);
-                }
-            }
-        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
+    public JSONObject getAsJSONObject(final String key) {
+        JSONObject obj = null;
+        String JSONString = getAsString(key);
+        try {
+            obj = new JSONObject(JSONString);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return obj;
     }
 
     // =======================================
@@ -300,17 +272,7 @@ public class ACache {
      * @param value 保存的JSONArray数据
      */
     public void put(final String key, final JSONArray value) {
-        Observable.create(new Observable.OnSubscribe<Integer>() {
-            @Override
-            public void call(Subscriber<? super Integer> subscriber) {
-                put(key, value.toString());
-            }
-        }).subscribeOn(Schedulers.io()).subscribe(new Action1<Integer>() {
-            @Override
-            public void call(Integer integer) {
-
-            }
-        });
+        put(key, value.toString());
     }
 
     /**
@@ -321,17 +283,7 @@ public class ACache {
      * @param saveTime 保存的时间，单位：秒
      */
     public void put(final String key, final JSONArray value, final int saveTime) {
-        Observable.create(new Observable.OnSubscribe<Integer>() {
-            @Override
-            public void call(Subscriber<? super Integer> subscriber) {
-                put(key, value.toString(), saveTime);
-            }
-        }).subscribeOn(Schedulers.io()).subscribe(new Action1<Integer>() {
-            @Override
-            public void call(Integer integer) {
-
-            }
-        });
+        put(key, value.toString(), saveTime);
     }
 
     /**
@@ -340,23 +292,16 @@ public class ACache {
      * @param key
      * @return JSONArray数据
      */
-    public Observable<JSONArray> getAsJSONArray(final String key) {
+    public JSONArray getAsJSONArray(final String key) {
+        JSONArray obj = null;
 
-
-        return Observable.create(new Observable.OnSubscribe<JSONArray>() {
-
-            @Override
-            public void call(Subscriber<? super JSONArray> subscriber) {
-                String JSONString = getAsString(key);
-                try {
-                    JSONArray obj = new JSONArray(JSONString);
-                    subscriber.onNext(obj);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    subscriber.onNext(null);
-                }
-            }
-        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
+        String JSONString = getAsString(key);
+        try {
+            obj = new JSONArray(JSONString);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return obj;
     }
 
     // =======================================
@@ -473,17 +418,7 @@ public class ACache {
      * @param value 保存的value
      */
     public void put(final String key, final Serializable value) {
-        Observable.create(new Observable.OnSubscribe<Integer>() {
-            @Override
-            public void call(Subscriber<? super Integer> subscriber) {
-                put(key, value, -1);
-            }
-        }).subscribeOn(Schedulers.io()).subscribe(new Action1<Integer>() {
-            @Override
-            public void call(Integer integer) {
-
-            }
-        });
+        put(key, value, -1);
 
     }
 
@@ -495,39 +430,28 @@ public class ACache {
      * @param saveTime 保存的时间，单位：秒
      */
     public void put(final String key, final Serializable value, final int saveTime) {
-        Observable.create(new Observable.OnSubscribe<Integer>() {
-            @Override
-            public void call(Subscriber<? super Integer> subscriber) {
-                ByteArrayOutputStream baos = null;
-                ObjectOutputStream oos = null;
-                try {
-                    baos = new ByteArrayOutputStream();
-                    oos = new ObjectOutputStream(baos);
-                    oos.writeObject(value);
-                    byte[] data = baos.toByteArray();
-                    if (saveTime != -1) {
-                        put(key, data, saveTime);
-                    } else {
-                        put(key, data);
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                } finally {
-                    try {
-                        if (oos != null) {
-                            oos.close();
-                        }
-                    } catch (IOException e) {
-                    }
+        ByteArrayOutputStream baos = null;
+        ObjectOutputStream oos = null;
+        try {
+            baos = new ByteArrayOutputStream();
+            oos = new ObjectOutputStream(baos);
+            oos.writeObject(value);
+            byte[] data = baos.toByteArray();
+            if (saveTime != -1) {
+                put(key, data, saveTime);
+            } else {
+                put(key, data);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (oos != null) {
+                    oos.close();
                 }
+            } catch (IOException e) {
             }
-        }).subscribeOn(Schedulers.io()).subscribe(new Action1<Integer>() {
-            @Override
-            public void call(Integer integer) {
-
-            }
-        });
-
+        }
     }
 
     /**
@@ -536,49 +460,40 @@ public class ACache {
      * @param key
      * @return Serializable 数据
      */
-    public Observable<Object> getAsObject(final String key) {
-        return Observable.create(new Observable.OnSubscribe<Object>() {
-
-            @Override
-            public void call(Subscriber<? super Object> subscriber) {
-                byte[] data = getAsBinary(key);
-                if (data != null) {
-                    ByteArrayInputStream bais = null;
-                    ObjectInputStream ois = null;
-                    try {
-                        bais = new ByteArrayInputStream(data);
-                        ois = new ObjectInputStream(bais);
-                        Object reObject = ois.readObject();
-                        subscriber.onNext(reObject);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        subscriber.onNext(null);
-                    } finally {
-                        try {
-                            if (bais != null)
-                                bais.close();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                        try {
-                            if (ois != null)
-                                ois.close();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }else{
-                    subscriber.onNext(null);
+    public Object getAsObject(final String key) {
+        Object reObject = null;
+        byte[] data = getAsBinary(key);
+        if (data != null) {
+            ByteArrayInputStream bais = null;
+            ObjectInputStream ois = null;
+            try {
+                bais = new ByteArrayInputStream(data);
+                ois = new ObjectInputStream(bais);
+                reObject = ois.readObject();
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                try {
+                    if (bais != null)
+                        bais.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    if (ois != null)
+                        ois.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
             }
-        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
-
+        }
+        return reObject;
 
     }
 
-    // =======================================
-    // ============== bitmap 数据 读写 =============
-    // =======================================
+// =======================================
+// ============== bitmap 数据 读写 =============
+// =======================================
 
     /**
      * 保存 bitmap 到 缓存中
@@ -587,17 +502,7 @@ public class ACache {
      * @param value 保存的bitmap数据
      */
     public void put(final String key, final Bitmap value) {
-        Observable.create(new Observable.OnSubscribe<Integer>() {
-            @Override
-            public void call(Subscriber<? super Integer> subscriber) {
-                put(key, Utils.Bitmap2Bytes(value));
-            }
-        }).subscribeOn(Schedulers.io()).subscribe(new Action1<Integer>() {
-            @Override
-            public void call(Integer integer) {
-            }
-        });
-
+        put(key, Utils.Bitmap2Bytes(value));
 
     }
 
@@ -609,17 +514,7 @@ public class ACache {
      * @param saveTime 保存的时间，单位：秒
      */
     public void put(final String key, final Bitmap value, final int saveTime) {
-        Observable.create(new Observable.OnSubscribe<Integer>() {
-            @Override
-            public void call(Subscriber<? super Integer> subscriber) {
-                put(key, Utils.Bitmap2Bytes(value), saveTime);
-            }
-        }).subscribeOn(Schedulers.io()).subscribe(new Action1<Integer>() {
-            @Override
-            public void call(Integer integer) {
-
-            }
-        });
+        put(key, Utils.Bitmap2Bytes(value), saveTime);
     }
 
     /**
@@ -628,22 +523,13 @@ public class ACache {
      * @param key
      * @return bitmap 数据
      */
-    public Observable<Bitmap> getAsBitmap(final String key) {
-        return Observable.create(new Observable.OnSubscribe<Bitmap>() {
-
-            @Override
-            public void call(Subscriber<? super Bitmap> subscriber) {
-                if (getAsBinary(key) == null) {
-                    return;
-                }
-                subscriber.onNext(Utils.Bytes2Bimap(getAsBinary(key)));
-            }
-        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
+    public Bitmap getAsBitmap(final String key) {
+        return Utils.Bytes2Bimap(getAsBinary(key));
     }
 
-    // =======================================
-    // ============= drawable 数据 读写 =============
-    // =======================================
+// =======================================
+// ============= drawable 数据 读写 =============
+// =======================================
 
     /**
      * 保存 drawable 到 缓存中
@@ -652,17 +538,7 @@ public class ACache {
      * @param value 保存的drawable数据
      */
     public void put(final String key, final Drawable value) {
-        Observable.create(new Observable.OnSubscribe<Integer>() {
-            @Override
-            public void call(Subscriber<? super Integer> subscriber) {
-                put(key, Utils.drawable2Bitmap(value));
-            }
-        }).subscribeOn(Schedulers.io()).subscribe(new Action1<Integer>() {
-            @Override
-            public void call(Integer integer) {
-
-            }
-        });
+        put(key, Utils.drawable2Bitmap(value));
     }
 
     /**
@@ -673,17 +549,7 @@ public class ACache {
      * @param saveTime 保存的时间，单位：秒
      */
     public void put(final String key, final Drawable value, final int saveTime) {
-        Observable.create(new Observable.OnSubscribe<Integer>() {
-            @Override
-            public void call(Subscriber<? super Integer> subscriber) {
-                put(key, Utils.drawable2Bitmap(value), saveTime);
-            }
-        }).subscribeOn(Schedulers.io()).subscribe(new Action1<Integer>() {
-            @Override
-            public void call(Integer integer) {
-
-            }
-        });
+        put(key, Utils.drawable2Bitmap(value), saveTime);
     }
 
     /**
@@ -692,18 +558,10 @@ public class ACache {
      * @param key
      * @return Drawable 数据
      */
-    public Observable<Drawable> getAsDrawable(final String key) {
+    public Drawable getAsDrawable(final String key) {
 
 
-        return Observable.create(new Observable.OnSubscribe<Drawable>() {
-            @Override
-            public void call(Subscriber<? super Drawable> subscriber) {
-                if (getAsBinary(key) == null) {
-                    return;
-                }
-                subscriber.onNext(Utils.bitmap2Drawable(Utils.Bytes2Bimap(getAsBinary(key))));
-            }
-        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
+        return Utils.bitmap2Drawable(Utils.Bytes2Bimap(getAsBinary(key)));
     }
 
     /**

@@ -3,72 +3,57 @@
   <component name="issues">
     <option name="index">
       <map>
-        <entry key="$PROJECT_DIR$/app/build.gradle">
+        <entry key="/Dummy.txt">
           <value>
             <set />
           </value>
         </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
+        <entry key="/a.regexp">
           <value>
             <set />
           </value>
         </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/java/cache/ecar/com/ecarcache/SaveBitmapActivity.java">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/java/cache/ecar/com/ecarcache/SaveDrawableActivity.java">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/java/cache/ecar/com/ecarcache/SaveJsonArrayActivity.java">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/java/cache/ecar/com/ecarcache/SaveJsonObjectActivity.java">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/java/cache/ecar/com/ecarcache/SaveMediaActivity.java">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/java/cache/ecar/com/ecarcache/SaveObjectActivity.java">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/java/cache/ecar/com/ecarcache/SaveStringActivity.java">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/build.gradle">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/ecarcache/build.gradle">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/ecarcache/src/main/AndroidManifest.xml">
+        <entry key="$USER_HOME$/Desktop/DEMOS/CustomizeKeyboard-master/app/src/main/AndroidManifest.xml">
           <value>
             <set />
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/ecarcache/src/main/java/cache/ecar/com/ecarcache/ACache.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../EcarNetFream2/ecarnet/src/main/java/com/ecar/ecarnetwork/util/major/Major.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../easyCharge-adnroid-160831/build.gradle">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../easyCharge-adnroid-160831/src/com/ecaray/easycharge/adapter/WalletHistoryAdapter.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../easyCharge-adnroid-160831/src/com/ecaray/easycharge/ui/activity/WalletActivity.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../easyCharge-adnroid-160831/src/com/ecaray/easycharge/ui/fragment/CaptureFragment.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../easyCharge-adnroid-160831/src/com/ecaray/easycharge/ui/fragment/ChargeFragmentManager.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../easycharge_20160420/src/com/ecaray/easycharge/network/HttpUrl.java">
           <value>
             <set />
           </value>

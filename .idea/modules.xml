@@ -4,7 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/EcarCache.iml" filepath="$PROJECT_DIR$/EcarCache.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/ecarcache/ecarcache2.iml" filepath="$PROJECT_DIR$/ecarcache/ecarcache2.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ecarcache/ecarcache.iml" filepath="$PROJECT_DIR$/ecarcache/ecarcache.iml" />
     </modules>
   </component>
 </project>

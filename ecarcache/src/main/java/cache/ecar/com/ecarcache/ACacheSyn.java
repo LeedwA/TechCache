@@ -58,6 +58,7 @@ import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
 import static android.system.Os.remove;
+import static cache.ecar.com.ecarcache.ACacheUtil.myPid;
 
 /**
  * 同步存取
@@ -99,9 +100,6 @@ public class ACacheSyn {
         return manager;
     }
 
-    private static String myPid() {
-        return "_" + android.os.Process.myPid();
-    }
 
     private ACacheSyn(File cacheDir, long max_size, int max_count) {
         if (!cacheDir.exists() && !cacheDir.mkdirs()) {

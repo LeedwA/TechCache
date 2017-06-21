@@ -57,11 +57,13 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
+import static android.os.Process.myPid;
+
 /**
  * 异步存取
  * @author Michael Yang（www.yangfuhai.com） update at 2013.08.07
  */
-public class ACache {
+public class ACache implements ACacheI{
     public static final int TIME_HOUR = 60 * 60;
     public static final int TIME_DAY = TIME_HOUR * 24;
     private static final int MAX_SIZE = 1000 * 1000 * 50; // 50 mb
@@ -88,16 +90,12 @@ public class ACache {
     }
 
     public static ACache get(File cacheDir, long max_zise, int max_count) {
-        ACache manager = mInstanceMap.get(cacheDir.getAbsoluteFile() + myPid());
+        ACache manager = mInstanceMap.get(cacheDir.getAbsoluteFile() + ACacheUtil.myPid());
         if (manager == null) {
             manager = new ACache(cacheDir, max_zise, max_count);
             mInstanceMap.put(cacheDir.getAbsolutePath() + myPid(), manager);
         }
         return manager;
-    }
-
-    private static String myPid() {
-        return "_" + android.os.Process.myPid();
     }
 
     private ACache(File cacheDir, long max_size, int max_count) {
